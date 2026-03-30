@@ -48,3 +48,6 @@ Suivi des activités de la clinique
 Authentification des utilisateurs
 
 Gestion des accès selon les rôles
+
+
+Demo : https://nathanaeldev08.github.io/CLINIQUE-PLUS-Syst-me-de-Gestion-de-Clinique/
