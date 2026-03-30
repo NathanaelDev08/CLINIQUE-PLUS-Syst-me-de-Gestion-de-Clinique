@@ -1,0 +1,3664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLINIQUE PLUS - Système de Gestion Intégré V2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0D9488;
+            --primary-dark: #0F766E;
+            --secondary: #64748B;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            --dark: #1E293B;
+            --light: #F8FAFC;
+            --border: #E2E8F0;
+            --text: #0F172A;
+            --text-light: #475569;
+            --text-muted: #94A3B8;
+            --white: #FFFFFF;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Conteneur principal */
+        .app-container {
+            width: 1600px;
+            max-width: 100%;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 95vh;
+        }
+
+        /* Header */
+        .app-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .logo span {
+            color: var(--text);
+        }
+
+        .logo .highlight {
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            padding: 4px;
+            max-width: 60%;
+        }
+
+        .nav-item {
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-light);
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            background: var(--light);
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-details {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: var(--light);
+            color: var(--danger);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--light);
+        }
+
+        /* Auth */
+        .auth-container {
+            max-width: 450px;
+            margin: 50px auto;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-header h2 {
+            font-size: 2rem;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .auth-header p {
+            color: var(--text-light);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group label i {
+            color: var(--primary);
+            width: 18px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light);
+            border-color: var(--text-light);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.primary {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-icon.info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+        }
+
+        .stat-icon.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-icon.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-icon.danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .stat-change {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 20px;
+        }
+
+        .stat-change.positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .page-header h1 {
+            font-size: 1.6rem;
+            color: var(--text);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h3 {
+            font-size: 1.1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border);
+            background: var(--light);
+        }
+
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--light);
+        }
+
+        /* Badges */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--info);
+        }
+
+        .badge-primary {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--primary);
+        }
+
+        /* Patient info */
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .patient-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .patient-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .patient-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .patient-id {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: var(--radius-sm);
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-icon:hover {
+            background: var(--border);
+            color: var(--primary);
+        }
+
+        /* Filters */
+        .filters-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--white);
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .search-box i {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .search-box input {
+            border: none;
+            background: none;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--white);
+            color: var(--text);
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+            min-width: 150px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 2px;
+            background: var(--light);
+            padding: 4px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: var(--white);
+        }
+
+        .tab.active {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-lg {
+            max-width: 1000px;
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--white);
+        }
+
+        .modal-header h2 {
+            font-size: 1.3rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            background: var(--light);
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            position: sticky;
+            bottom: 0;
+            background: var(--white);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .page-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            background: var(--white);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+            max-width: 350px;
+        }
+
+        .toast.success {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .toast.error {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .toast.info {
+            background: var(--info);
+            color: var(--white);
+        }
+
+        .toast.warning {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* Kanban board */
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .kanban-column {
+            background: var(--light);
+            border-radius: var(--radius-lg);
+            padding: 12px;
+        }
+
+        .kanban-header {
+            font-weight: 600;
+            padding: 8px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .kanban-item {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-bottom: 8px;
+            box-shadow: var(--shadow-sm);
+            cursor: move;
+            transition: all 0.3s;
+        }
+
+        .kanban-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 16px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 20px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 16px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid var(--white);
+        }
+
+        .timeline-content {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .app-header {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .nav-menu {
+                max-width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .form-row, .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-actions {
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Calendar */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 8px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .calendar-day {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            min-height: 80px;
+            padding: 4px;
+        }
+
+        .calendar-day-number {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .calendar-event {
+            background: rgba(13, 148, 136, 0.1);
+            color: var(--primary);
+            padding: 2px 4px;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container" id="app">
+        <!-- Header -->
+        <header class="app-header" id="mainHeader" style="display: none;">
+            <div class="logo">
+                <i class="fas fa-clinic-medical"></i>
+                <span>CLINIQUE<span class="highlight">PLUS</span></span>
+            </div>
+            
+            <nav class="nav-menu" id="navMenu">
+                <div class="nav-item active" onclick="showPage('dashboard')">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="showPage('patients')">
+                    <i class="fas fa-users"></i>
+                    <span>Patients</span>
+                </div>
+                <div class="nav-item" onclick="showPage('appointments')">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Rendez-vous</span>
+                </div>
+                <div class="nav-item" onclick="showPage('consultations')">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Consultations</span>
+                </div>
+                <div class="nav-item" onclick="showPage('medical-records')">
+                    <i class="fas fa-notes-medical"></i>
+                    <span>Dossiers médicaux</span>
+                </div>
+                <div class="nav-item" onclick="showPage('prescriptions')">
+                    <i class="fas fa-prescription"></i>
+                    <span>Prescriptions</span>
+                </div>
+                <div class="nav-item" onclick="showPage('labo')">
+                    <i class="fas fa-flask"></i>
+                    <span>Laboratoire</span>
+                </div>
+                <div class="nav-item" onclick="showPage('pharmacy')">
+                    <i class="fas fa-pills"></i>
+                    <span>Pharmacie</span>
+                </div>
+                <div class="nav-item" onclick="showPage('invoices')">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Facturation</span>
+                </div>
+                <div class="nav-item" onclick="showPage('stock')">
+                    <i class="fas fa-boxes"></i>
+                    <span>Stock</span>
+                </div>
+                <div class="nav-item" onclick="showPage('staff')">
+                    <i class="fas fa-user-md"></i>
+                    <span>Personnel</span>
+                </div>
+                <div class="nav-item" onclick="showPage('reports')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Rapports</span>
+                </div>
+                <div class="nav-item" onclick="showPage('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>Paramètres</span>
+                </div>
+            </nav>
+            
+            <div class="user-info">
+                <div class="user-details">
+                    <div class="user-name" id="userName">Admin</div>
+                    <div class="user-role" id="userRole">Super Admin</div>
+                </div>
+                <div class="user-avatar" id="userAvatar">AD</div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Login Page -->
+            <div id="loginPage">
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <h2>CLINIQUE PLUS</h2>
+                        <p>Système de Gestion Intégré V2.0</p>
+                    </div>
+                    
+                    <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-envelope"></i>
+                                Email
+                            </label>
+                            <input type="email" id="email" required placeholder="admin@clinique.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-lock"></i>
+                                Mot de passe
+                            </label>
+                            <input type="password" id="password" required placeholder="••••••••">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Se connecter
+                        </button>
+                    </form>
+                    
+                    <div class="demo-accounts" style="margin-top: 20px; text-align: center;">
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Comptes de démonstration :</p>
+                        <div style="display: flex; gap: 8px; justify-content: center; margin-top: 10px; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="fillCredentials('admin@clinique.com', 'admin123')">
+                                <i class="fas fa-user-cog"></i> Admin
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="fillCredentials('medecin@clinique.com', 'medecin123')">
+                                <i class="fas fa-user-md"></i> Médecin
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="fillCredentials('secretaire@clinique.com', 'secret123')">
+                                <i class="fas fa-user-tie"></i> Secrétaire
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="fillCredentials('pharmacien@clinique.com', 'pharma123')">
+                                <i class="fas fa-pills"></i> Pharmacien
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="fillCredentials('labo@clinique.com', 'labo123')">
+                                <i class="fas fa-flask"></i> Laborantin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div id="dashboardPage" style="display: none;">
+                <div class="page-header">
+                    <h1>Tableau de bord</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="showPage('appointments')">
+                            <i class="fas fa-plus"></i> Nouveau RDV
+                        </button>
+                        <button class="btn btn-success" onclick="showPage('patients')">
+                            <i class="fas fa-user-plus"></i> Nouveau patient
+                        </button>
+                        <button class="btn btn-secondary" onclick="refreshDashboard()">
+                            <i class="fas fa-sync-alt"></i> Actualiser
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Patients total</span>
+                            <span class="stat-value" id="statsTotalPatients">1,284</span>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> +12%
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">RDV aujourd'hui</span>
+                            <span class="stat-value" id="statsTodayAppointments">24</span>
+                        </div>
+                        <div class="stat-change">
+                            <span>8 en attente</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Revenus du mois</span>
+                            <span class="stat-value" id="statsMonthlyRevenue">12.5M FCFA</span>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> +23%
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-procedures"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Patients hospitalisés</span>
+                            <span class="stat-value" id="statsHospitalized">18</span>
+                        </div>
+                        <div class="stat-change">
+                            <span>12 lits disponibles</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Alertes stock</span>
+                            <span class="stat-value" id="statsAlerts">6</span>
+                        </div>
+                        <div class="stat-change negative">
+                            <i class="fas fa-arrow-down"></i> Stock bas
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas
+                                                    <div class="stat-icon primary">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Médecins</span>
+                            <span class="stat-value" id="statsDoctors">15</span>
+                        </div>
+                        <div class="stat-change">
+                            <span>8 en service</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graphiques et activités -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <!-- Graphique des activités -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Activité hebdomadaire</h3>
+                            <select class="filter-select" style="width: auto;" onchange="updateDashboardChart(this.value)">
+                                <option value="week">Cette semaine</option>
+                                <option value="month">Ce mois</option>
+                                <option value="year">Cette année</option>
+                            </select>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="dashboardChart" style="height: 250px; width: 100%;"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Prochains rendez-vous -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-clock"></i> Prochains RDV</h3>
+                            <a href="#" onclick="showPage('appointments')" style="color: var(--primary); font-size: 0.9rem;">Voir tout</a>
+                        </div>
+                        <div class="card-body" style="max-height: 250px; overflow-y: auto;">
+                            <div class="appointments-list" id="upcomingAppointments">
+                                <!-- Dynamique -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deuxième ligne -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <!-- Patients récents -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-user-plus"></i> Derniers patients</h3>
+                            <a href="#" onclick="showPage('patients')" style="color: var(--primary); font-size: 0.9rem;">Voir tout</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Contact</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentPatients">
+                                        <!-- Dynamique -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alertes et notifications -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bell"></i> Alertes & Notifications</h3>
+                            <span class="badge badge-danger" id="alertCount">6</span>
+                        </div>
+                        <div class="card-body" style="max-height: 250px; overflow-y: auto;">
+                            <div id="notificationsList">
+                                <!-- Dynamique -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Occupation des lits -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-procedures"></i> Occupation des lits</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;" id="bedsOccupancy">
+                            <!-- Dynamique -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PATIENTS -->
+            <div id="patientsPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-users"></i> Gestion des Patients</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="openPatientModal()">
+                            <i class="fas fa-plus"></i> Nouveau patient
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportPatients('excel')">
+                            <i class="fas fa-file-excel"></i> Excel
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportPatients('pdf')">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                        <button class="btn btn-secondary" onclick="printPatients()">
+                            <i class="fas fa-print"></i> Imprimer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filtres avancés -->
+                <div class="filters-bar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="patientSearch" placeholder="Rechercher (nom, téléphone, NIP...)">
+                    </div>
+                    
+                    <select id="patientTypeFilter" class="filter-select">
+                        <option value="all">Tous les types</option>
+                        <option value="outpatient">Externe</option>
+                        <option value="inpatient">Hospitalisé</option>
+                        <option value="emergency">Urgence</option>
+                    </select>
+
+                    <select id="patientStatusFilter" class="filter-select">
+                        <option value="all">Tous statuts</option>
+                        <option value="active">Actif</option>
+                        <option value="inactive">Inactif</option>
+                    </select>
+
+                    <select id="patientInsuranceFilter" class="filter-select">
+                        <option value="all">Toutes assurances</option>
+                        <option value="sunu">SUNU</option>
+                        <option value="nsia">NSIA</option>
+                        <option value="axa">AXA</option>
+                    </select>
+
+                    <button class="btn btn-secondary" onclick="filterPatients()">
+                        <i class="fas fa-filter"></i> Filtrer
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetPatientFilters()">
+                        <i class="fas fa-undo"></i> Réinitialiser
+                    </button>
+                </div>
+
+                <!-- Tabs patients -->
+                <div class="tabs">
+                    <div class="tab active" onclick="switchPatientTab('all')">Tous</div>
+                    <div class="tab" onclick="switchPatientTab('today')">Aujourd'hui</div>
+                    <div class="tab" onclick="switchPatientTab('week')">Cette semaine</div>
+                    <div class="tab" onclick="switchPatientTab('month')">Ce mois</div>
+                    <div class="tab" onclick="switchPatientTab('hospitalized')">Hospitalisés</div>
+                </div>
+
+                <!-- Tableau patients -->
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="data-table" id="patientsTable">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" onclick="toggleAllPatients(this)"></th>
+                                    <th>NIP</th>
+                                    <th>Patient</th>
+                                    <th>Âge/Sexe</th>
+                                    <th>Contact</th>
+                                    <th>Groupe sanguin</th>
+                                    <th>Assurance</th>
+                                    <th>Type</th>
+                                    <th>Dernière visite</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patientsList">
+                                <!-- Dynamique -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button class="page-btn" onclick="changePatientsPage('first')"><i class="fas fa-angle-double-left"></i></button>
+                        <button class="page-btn" onclick="changePatientsPage('prev')"><i class="fas fa-chevron-left"></i></button>
+                        <span class="page-info" id="patientsPageInfo">Page 1 sur 10</span>
+                        <button class="page-btn" onclick="changePatientsPage('next')"><i class="fas fa-chevron-right"></i></button>
+                        <button class="page-btn" onclick="changePatientsPage('last')"><i class="fas fa-angle-double-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RENDEZ-VOUS -->
+            <div id="appointmentsPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-calendar-check"></i> Gestion des Rendez-vous</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="openAppointmentModal()">
+                            <i class="fas fa-plus"></i> Nouveau RDV
+                        </button>
+                        <button class="btn btn-secondary" onclick="toggleView('calendar')">
+                            <i class="fas fa-calendar-alt"></i> Calendrier
+                        </button>
+                        <button class="btn btn-secondary" onclick="toggleView('list')">
+                            <i class="fas fa-list"></i> Liste
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filtres rendez-vous -->
+                <div class="filters-bar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="appointmentSearch" placeholder="Rechercher patient/médecin...">
+                    </div>
+                    
+                    <input type="date" id="appointmentDateFilter" class="filter-select" onchange="filterAppointments()">
+                    
+                    <select id="appointmentDoctorFilter" class="filter-select">
+                        <option value="all">Tous médecins</option>
+                    </select>
+
+                    <select id="appointmentStatusFilter" class="filter-select">
+                        <option value="all">Tous statuts</option>
+                        <option value="scheduled">Planifié</option>
+                        <option value="confirmed">Confirmé</option>
+                        <option value="in-progress">En cours</option>
+                        <option value="completed">Terminé</option>
+                        <option value="cancelled">Annulé</option>
+                        <option value="no-show">Absent</option>
+                    </select>
+                </div>
+
+                <!-- Vue Calendrier -->
+                <div id="calendarView" style="display: block;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <button class="btn btn-secondary" onclick="changeMonth('prev')"><i class="fas fa-chevron-left"></i></button>
+                                <h3 id="currentMonthYear">Février 2025</h3>
+                                <button class="btn btn-secondary" onclick="changeMonth('next')"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary" onclick="goToToday()">Aujourd'hui</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="calendar-grid" id="calendarGrid">
+                                <!-- Généré par JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vue Liste -->
+                <div id="listView" style="display: none;">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Heure</th>
+                                        <th>Patient</th>
+                                        <th>Médecin</th>
+                                        <th>Type</th>
+                                        <th>Motif</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointmentsList">
+                                    <!-- Dynamique -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONSULTATIONS -->
+            <div id="consultationsPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-stethoscope"></i> Consultations</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="startConsultation()">
+                            <i class="fas fa-play"></i> Démarrer consultation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- File d'attente -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-clock"></i> File d'attente</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="kanban-board">
+                            <div class="kanban-column">
+                                <div class="kanban-header" style="border-bottom-color: var(--warning);">En attente (4)</div>
+                                <div id="waitingQueue"></div>
+                            </div>
+                            <div class="kanban-column">
+                                <div class="kanban-header" style="border-bottom-color: var(--info);">En consultation (2)</div>
+                                <div id="inConsultation"></div>
+                            </div>
+                            <div class="kanban-column">
+                                <div class="kanban-header" style="border-bottom-color: var(--success);">Terminé (8)</div>
+                                <div id="completedConsultations"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consultation en cours -->
+                <div class="card" id="currentConsultation" style="display: none;">
+                    <div class="card-header">
+                        <h3>Consultation en cours</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label>Patient</label>
+                                <input type="text" id="consultPatient" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Médecin</label>
+                                <input type="text" id="consultDoctor" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Heure début</label>
+                                <input type="text" id="consultStartTime" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Signes vitaux -->
+                        <h4 style="margin: 20px 0 10px;">Signes vitaux</h4>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label>Tension artérielle</label>
+                                <input type="text" id="bloodPressure" placeholder="120/80">
+                            </div>
+                            <div class="form-group">
+                                <label>Fréquence cardiaque</label>
+                                <input type="text" id="heartRate" placeholder="75 bpm">
+                            </div>
+                            <div class="form-group">
+                                <label>Température</label>
+                                <input type="text" id="temperature" placeholder="37.2 °C">
+                            </div>
+                            <div class="form-group">
+                                <label>Fréquence respiratoire</label>
+                                <input type="text" id="respiratoryRate" placeholder="16/min">
+                            </div>
+                            <div class="form-group">
+                                <label>Saturation O2</label>
+                                <input type="text" id="oxygenSaturation" placeholder="98%">
+                            </div>
+                            <div class="form-group">
+                                <label>Glycémie</label>
+                                <input type="text" id="bloodSugar" placeholder="1.0 g/L">
+                            </div>
+                        </div>
+
+                        <!-- Symptômes et diagnostic -->
+                        <h4 style="margin: 20px 0 10px;">Examen clinique</h4>
+                        <div class="form-group">
+                            <label>Symptômes</label>
+                            <textarea id="symptoms" rows="3" placeholder="Décrire les symptômes..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Diagnostic</label>
+                            <textarea id="diagnosis" rows="3" placeholder="Diagnostic..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Traitement / Prescription</label>
+                            <textarea id="treatment" rows="3" placeholder="Traitement prescrit..."></textarea>
+                        </div>
+
+                        <!-- Examens complémentaires -->
+                        <h4 style="margin: 20px 0 10px;">Examens complémentaires</h4>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label><input type="checkbox" value="blood_test"> Analyse sanguine</label>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" value="urine_test"> Analyse d'urine</label>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" value="radiography"> Radiographie</label>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" value="ultrasound"> Échographie</label>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" value="scanner"> Scanner</label>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" value="irm"> IRM</label>
+                            </div>
+                        </div>
+
+                        <!-- Rendez-vous de suivi -->
+                        <h4 style="margin: 20px 0 10px;">Suivi</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date de suivi</label>
+                                <input type="date" id="followUpDate">
+                            </div>
+                            <div class="form-group">
+                                <label>Type de suivi</label>
+                                <select id="followUpType">
+                                    <option value="consultation">Consultation</option>
+                                    <option value="control">Contrôle</option>
+                                    <option value="results">Résultats examens</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                            <button class="btn btn-secondary" onclick="saveConsultation('draft')">
+                                <i class="fas fa-save"></i> Brouillon
+                            </button>
+                            <button class="btn btn-success" onclick="saveConsultation('complete')">
+                                <i class="fas fa-check"></i> Terminer consultation
+                            </button>
+                            <button class="btn btn-primary" onclick="prescribeMedicines()">
+                                <i class="fas fa-prescription"></i> Prescrire médicaments
+                            </button>
+                            <button class="btn btn-info" onclick="requestLabTests()">
+                                <i class="fas fa-flask"></i> Demander examens
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOSSIERS MEDICAUX -->
+            <div id="medicalRecordsPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-notes-medical"></i> Dossiers Médicaux</h1>
+                    <div class="header-actions">
+                        <input type="text" class="search-box" style="width: 300px;" placeholder="Rechercher par NIP ou nom...">
+                        <button class="btn btn-primary" onclick="searchMedicalRecord()">
+                            <i class="fas fa-search"></i> Rechercher
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: 300px 1fr; gap: 20px;">
+                            <!-- Liste des patients -->
+                            <div style="border-right: 1px solid var(--border); padding-right: 20px;">
+                                <h3 style="margin-bottom: 15px;">Patients récents</h3>
+                                <div id="recentPatientsList" style="max-height: 500px; overflow-y: auto;"></div>
+                            </div>
+
+                            <!-- Dossier médical -->
+                            <div id="medicalRecordDetail">
+                                <div style="text-align: center; color: var(--text-muted); padding: 50px;">
+                                    <i class="fas fa-notes-medical" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                                    <p>Sélectionnez un patient pour voir son dossier médical</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRESCRIPTIONS -->
+            <div id="prescriptionsPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-prescription"></i> Prescriptions</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="newPrescription()">
+                            <i class="fas fa-plus"></i> Nouvelle prescription
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="tabs">
+                            <div class="tab active" onclick="switchPrescriptionTab('active')">Actives</div>
+                            <div class="tab" onclick="switchPrescriptionTab('history')">Historique</div>
+                            <div class="tab" onclick="switchPrescriptionTab('renewals')">Renouvellements</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Patient</th>
+                                    <th>Médecin</th>
+                                    <th>Médicaments</th>
+                                    <th>Durée</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="prescriptionsList">
+                                <!-- Dynamique -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LABORATOIRE -->
+            <div id="laboPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-flask"></i> Laboratoire</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="newLabRequest()">
+                            <i class="fas fa-plus"></i> Nouvelle demande
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" onclick="switchLabTab('pending')">En attente (12)</div>
+                    <div class="tab" onclick="switchLabTab('in-progress')">En cours (5)</div>
+                    <div class="tab" onclick="switchLabTab('completed')">Terminés (48)</div>
+                    <div class="tab" onclick="switchLabTab('all')">Tous</div>
+                </div>
+
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>N° Demande</th>
+                                    <th>Date</th>
+                                    <th>Patient</th>
+                                    <th>Médecin</th>
+                                    <th>Type d'analyse</th>
+                                    <th>Urgence</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="labRequestsList">
+                                <!-- Dynamique -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHARMACIE -->
+            <div id="pharmacyPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-pills"></i> Pharmacie</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="newDispensation()">
+                            <i class="fas fa-cart-plus"></i> Nouvelle délivrance
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <!-- Délivrances en attente -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Prescriptions en attente</h3>
+                        </div>
+                        <div class="card-body" id="pendingPrescriptions">
+                            <!-- Dynamique -->
+                        </div>
+                    </div>
+
+                    <!-- Dernières délivrances -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Dernières délivrances</h3>
+                        </div>
+                        <div class="card-body" id="recentDispensations">
+                            <!-- Dynamique -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FACTURATION -->
+            <div id="invoicesPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-file-invoice"></i> Facturation</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="newInvoice()">
+                            <i class="fas fa-plus"></i> Nouvelle facture
+                        </button>
+                        <button class="btn btn-success" onclick="newPayment()">
+                            <i class="fas fa-money-bill"></i> Encaisser
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">CA du jour</span>
+                            <span class="stat-value">850 000 FCFA</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Impayés</span>
+                            <span class="stat-value">1 250 000 FCFA</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Factures émises</span>
+                            <span class="stat-value">156</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Taux recouvrement</span>
+                            <span class="stat-value">78%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs facturation -->
+                <div class="tabs">
+                    <div class="tab active" onclick="switchInvoiceTab('all')">Toutes</div>
+                    <div class="tab" onclick="switchInvoiceTab('pending')">En attente</div>
+                    <div class="tab" onclick="switchInvoiceTab('paid')">Payées</div>
+                    <div class="tab" onclick="switchInvoiceTab('overdue')">Échues</div>
+                    <div class="tab" onclick="switchInvoiceTab('insurance')">Assurances</div>
+                </div>
+
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>N° Facture</th>
+                                    <th>Date</th>
+                                    <th>Patient</th>
+                                    <th>Montant</th>
+                                    <th>Payé</th>
+                                    <th>Reste</th>
+                                    <th>Échéance</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoicesList">
+                                <!-- Dynamique -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GESTION DE STOCK -->
+            <div id="stockPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-boxes"></i> Gestion de Stock</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="newStockEntry()">
+                            <i class="fas fa-plus"></i> Entrée stock
+                        </button>
+                        <button class="btn btn-warning" onclick="newStockExit()">
+                            <i class="fas fa-minus"></i> Sortie stock
+                        </button>
+                        <button class="btn btn-secondary" onclick="inventoryCount()">
+                            <i class="fas fa-calculator"></i> Inventaire
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Médicaments</span>
+                            <span class="stat-value">245</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Stock faible</span>
+                            <span class="stat-value">12</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-euro-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Valeur stock</span>
+                            <span class="stat-value">8.5M FCFA</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Périmés</span>
+                            <span class="stat-value">3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtres stock -->
+                <div class="filters-bar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Rechercher un produit...">
+                    </div>
+                    <select class="filter-select">
+                        <option>Toutes catégories</option>
+                        <option>Médicaments</option>
+                        <option>Consommables</option>
+                        <option>Matériel</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Tous statuts</option>
+                        <option>Stock normal</option>
+                        <option>Stock faible</option>
+                        <option>Rupture</option>
+                        <option>Périmé</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Produit</th>
+                                    <th>Catégorie</th>
+                                    <th>Stock actuel</th>
+                                    <th>Stock min</th>
+                                    <th>Stock max</th>
+                                    <th>Prix unitaire</th>
+                                    <th>Date péremption</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stockList">
+                                <!-- Dynamique -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                            </div>
+
+            <!-- GESTION DU PERSONNEL -->
+            <div id="staffPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-user-md"></i> Gestion du Personnel</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="openStaffModal()">
+                            <i class="fas fa-user-plus"></i> Nouvel employé
+                        </button>
+                        <button class="btn btn-secondary" onclick="manageSchedule()">
+                            <i class="fas fa-clock"></i> Planning
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" onclick="switchStaffTab('all')">Tous</div>
+                    <div class="tab" onclick="switchStaffTab('doctors')">Médecins</div>
+                    <div class="tab" onclick="switchStaffTab('nurses')">Infirmiers</div>
+                    <div class="tab" onclick="switchStaffTab('admin')">Administratif</div>
+                    <div class="tab" onclick="switchStaffTab('other')">Autres</div>
+                </div>
+
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Matricule</th>
+                                    <th>Employé</th>
+                                    <th>Fonction</th>
+                                    <th>Département</th>
+                                    <th>Téléphone</th>
+                                    <th>Email</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffList">
+                                <!-- Dynamique -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAPPORTS ET STATISTIQUES -->
+            <div id="reportsPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-chart-bar"></i> Rapports et Statistiques</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="generateReport()">
+                            <i class="fas fa-file-pdf"></i> Générer rapport
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportData()">
+                            <i class="fas fa-download"></i> Exporter
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Consultations</span>
+                            <span class="stat-value">1,245</span>
+                        </div>
+                        <div class="stat-change positive">+15%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-procedures"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Hospitalisations</span>
+                            <span class="stat-value">234</span>
+                        </div>
+                        <div class="stat-change">-3%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Analyses</span>
+                            <span class="stat-value">892</span>
+                        </div>
+                        <div class="stat-change positive">+8%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Prescriptions</span>
+                            <span class="stat-value">2,156</span>
+                        </div>
+                        <div class="stat-change positive">+12%</div>
+                    </div>
+                </div>
+
+                <!-- Graphiques de rapports -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Activité mensuelle</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="monthlyActivityChart" style="height: 300px;"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Répartition par service</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="serviceChart" style="height: 300px;"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Revenus mensuels</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="revenueChart" style="height: 300px;"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Top 10 diagnostics</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="diagnosisChart" style="height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rapports préconfigurés -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Rapports rapides</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                            <button class="btn btn-secondary" onclick="quickReport('daily')">
+                                <i class="fas fa-calendar-day"></i> Rapport journalier
+                            </button>
+                            <button class="btn btn-secondary" onclick="quickReport('weekly')">
+                                <i class="fas fa-calendar-week"></i> Rapport hebdomadaire
+                            </button>
+                            <button class="btn btn-secondary" onclick="quickReport('monthly')">
+                                <i class="fas fa-calendar-alt"></i> Rapport mensuel
+                            </button>
+                            <button class="btn btn-secondary" onclick="quickReport('annual')">
+                                <i class="fas fa-calendar"></i> Rapport annuel
+                            </button>
+                            <button class="btn btn-secondary" onclick="quickReport('financial')">
+                                <i class="fas fa-chart-line"></i> Rapport financier
+                            </button>
+                            <button class="btn btn-secondary" onclick="quickReport('activity')">
+                                <i class="fas fa-activity"></i> Rapport d'activité
+                            </button>
+                            <button class="btn btn-secondary" onclick="quickReport('stock')">
+                                <i class="fas fa-boxes"></i> Rapport de stock
+                            </button>
+                            <button class="btn btn-secondary" onclick="quickReport('staff')">
+                                <i class="fas fa-users"></i> Rapport personnel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARAMÈTRES -->
+            <div id="settingsPage" style="display: none;">
+                <div class="page-header">
+                    <h1><i class="fas fa-cog"></i> Paramètres</h1>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" onclick="switchSettingsTab('general')">Général</div>
+                    <div class="tab" onclick="switchSettingsTab('clinic')">Clinique</div>
+                    <div class="tab" onclick="switchSettingsTab('users')">Utilisateurs</div>
+                    <div class="tab" onclick="switchSettingsTab('roles')">Rôles & permissions</div>
+                    <div class="tab" onclick="switchSettingsTab('billing')">Facturation</div>
+                    <div class="tab" onclick="switchSettingsTab('backup')">Sauvegarde</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div id="generalSettings">
+                            <h3 style="margin-bottom: 20px;">Paramètres généraux</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nom de la clinique</label>
+                                    <input type="text" value="CLINIQUE PLUS">
+                                </div>
+                                <div class="form-group">
+                                    <label>Adresse</label>
+                                    <input type="text" value="Dakar, Sénégal">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Téléphone</label>
+                                    <input type="text" value="+221 33 123 45 67">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" value="contact@cliniqueplus.sn">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Devise</label>
+                                    <select>
+                                        <option value="XOF" selected>Franc CFA (XOF)</option>
+                                        <option value="EUR">Euro (EUR)</option>
+                                        <option value="USD">Dollar (USD)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fuseau horaire</label>
+                                    <select>
+                                        <option value="GMT" selected>GMT (UTC+0)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Langue par défaut</label>
+                                <select>
+                                    <option value="fr" selected>Français</option>
+                                    <option value="en">Anglais</option>
+                                </select>
+                            </div>
+
+                            <div style="margin-top: 20px;">
+                                <button class="btn btn-primary">Enregistrer les modifications</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL PATIENT -->
+    <div id="patientModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2 id="patientModalTitle">Nouveau patient</h2>
+                <button class="close-btn" onclick="closePatientModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="patientForm" onsubmit="savePatient(event)">
+                <div class="modal-body">
+                    <!-- Informations personnelles -->
+                    <h4 style="margin-bottom: 15px;">Informations personnelles</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NIP (Numéro d'identification)</label>
+                            <input type="text" id="patientId" readonly value="Généré automatiquement">
+                        </div>
+                        <div class="form-group">
+                            <label>Photo</label>
+                            <input type="file" id="patientPhoto" accept="image/*">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Prénom *</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nom *</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date de naissance *</label>
+                            <input type="date" id="birthDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Lieu de naissance</label>
+                            <input type="text" id="birthPlace">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Genre *</label>
+                            <select id="gender" required>
+                                <option value="">Sélectionner</option>
+                                <option value="M">Masculin</option>
+                                <option value="F">Féminin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Situation matrimoniale</label>
+                            <select id="maritalStatus">
+                                <option value="single">Célibataire</option>
+                                <option value="married">Marié(e)</option>
+                                <option value="divorced">Divorcé(e)</option>
+                                <option value="widowed">Veuf/veuve</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Profession</label>
+                            <input type="text" id="profession">
+                        </div>
+                        <div class="form-group">
+                            <label>Nationalité</label>
+                            <input type="text" id="nationality" value="Sénégalaise">
+                        </div>
+                    </div>
+
+                    <!-- Coordonnées -->
+                    <h4 style="margin: 20px 0 15px;">Coordonnées</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Téléphone mobile *</label>
+                            <input type="tel" id="phone" required placeholder="77 123 45 67">
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone fixe</label>
+                            <input type="tel" id="phoneHome" placeholder="33 123 45 67">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="patient@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Adresse</label>
+                        <textarea id="address" rows="2" placeholder="Adresse complète"></textarea>
+                    </div>
+
+                    <!-- Informations médicales -->
+                    <h4 style="margin: 20px 0 15px;">Informations médicales</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Groupe sanguin</label>
+                            <select id="bloodType">
+                                <option value="">Non spécifié</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Facteur Rhésus</label>
+                            <select id="rhesus">
+                                <option value="">Non spécifié</option>
+                                <option value="positif">Positif</option>
+                                <option value="negatif">Négatif</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Allergies</label>
+                        <input type="text" id="allergies" placeholder="Ex: Pénicilline, Arachides...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Antécédents médicaux</label>
+                        <textarea id="medicalHistory" rows="3" placeholder="Antécédents chirurgicaux, maladies chroniques..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Traitements en cours</label>
+                        <textarea id="currentTreatments" rows="2" placeholder="Médicaments pris actuellement"></textarea>
+                    </div>
+
+                    <!-- Contact d'urgence -->
+                    <h4 style="margin: 20px 0 15px;">Contact d'urgence</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nom complet</label>
+                            <input type="text" id="emergencyName">
+                        </div>
+                        <div class="form-group">
+                            <label>Lien de parenté</label>
+                            <input type="text" id="emergencyRelation">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Téléphone</label>
+                            <input type="tel" id="emergencyPhone">
+                        </div>
+                        <div class="form-group">
+                            <label>Adresse</label>
+                            <input type="text" id="emergencyAddress">
+                        </div>
+                    </div>
+
+                    <!-- Assurance -->
+                    <h4 style="margin: 20px 0 15px;">Assurance maladie</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Compagnie d'assurance</label>
+                            <select id="insuranceCompany">
+                                <option value="">Sans assurance</option>
+                                <option value="sunu">SUNU Assurance</option>
+                                <option value="nsia">NSIA Assurance</option>
+                                <option value="axa">AXA Assurance</option>
+                                <option value="allianz">Allianz</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Numéro de police</label>
+                            <input type="text" id="insuranceNumber">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date d'adhésion</label>
+                            <input type="date" id="insuranceStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Date d'expiration</label>
+                            <input type="date" id="insuranceEndDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Taux de couverture (%)</label>
+                        <input type="number" id="insuranceRate" min="0" max="100" value="80">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePatientModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL RENDEZ-VOUS -->
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nouveau rendez-vous</h2>
+                <button class="close-btn" onclick="closeAppointmentModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="appointmentForm" onsubmit="saveAppointment(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Patient *</label>
+                        <select id="appointmentPatient" required>
+                            <option value="">Rechercher un patient...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Médecin *</label>
+                        <select id="appointmentDoctor" required>
+                            <option value="">Sélectionner un médecin</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date *</label>
+                            <input type="date" id="appointmentDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Heure *</label>
+                            <input type="time" id="appointmentTime" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Durée (minutes)</label>
+                            <select id="appointmentDuration">
+                                <option value="15">15 min</option>
+                                <option value="30" selected>30 min</option>
+                                <option value="45">45 min</option>
+                                <option value="60">1 heure</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Type de consultation</label>
+                            <select id="appointmentType">
+                                <option value="consultation">Consultation</option>
+                                <option value="follow-up">Suivi</option>
+                                <option value="emergency">Urgence</option>
+                                <option value="control">Contrôle</option>
+                                <option value="vaccination">Vaccination</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Motif de la consultation</label>
+                        <textarea id="appointmentReason" rows="3" placeholder="Motif..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label><input type="checkbox" id="sendReminder"> Envoyer un rappel</label>
+                    </div>
+
+                    <div id="reminderOptions" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><input type="checkbox" value="sms"> SMS</label>
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" value="email"> Email</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeAppointmentModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Programmer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL PRESCRIPTION -->
+    <div id="prescriptionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nouvelle prescription</h2>
+                <button class="close-btn" onclick="closePrescriptionModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="prescriptionForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Patient</label>
+                        <input type="text" id="prescriptionPatient" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Médecin</label>
+                        <input type="text" id="prescriptionDoctor" readonly>
+                    </div>
+
+                    <div id="medicinesList">
+                        <!-- Liste des médicaments -->
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" onclick="addMedicine()">
+                        <i class="fas fa-plus"></i> Ajouter un médicament
+                    </button>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Instructions spéciales</label>
+                        <textarea rows="3" placeholder="Instructions pour le patient..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePrescriptionModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Prescrire</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast" style="display: none;">
+        <i class="fas" id="toastIcon"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // ==================== DONNÉES DE L'APPLICATION ====================
+        let currentUser = null;
+        let currentPage = 'dashboard';
+        
+        // Données simulées
+        let patients = [
+            { id: 'P001', firstName: 'Amadou', lastName: 'Diallo', birthDate: '1985-06-15', gender: 'M', phone: '77 123 45 67', email: 'amadou.diallo@email.com', bloodType: 'O+', status: 'active' },
+            { id: 'P002', firstName: 'Fatou', lastName: 'Sow', birthDate: '1990-03-22', gender: 'F', phone: '78 234 56 78', email: 'fatou.sow@email.com', bloodType: 'A+', status: 'active' },
+            { id: 'P003', firstName: 'Mamadou', lastName: 'Ndiaye', birthDate: '1978-11-08', gender: 'M', phone: '76 345 67 89', email: 'mamadou.ndiaye@email.com', bloodType: 'B-', status: 'inactive' }
+        ];
+
+        let appointments = [
+            { id: 'A001', patientId: 'P001', patientName: 'Amadou Diallo', doctor: 'Dr. Diallo', date: '2025-02-26', time: '09:00', type: 'consultation', status: 'confirmed' },
+            { id: 'A002', patientId: 'P002', patientName: 'Fatou Sow', doctor: 'Dr. Diop', date: '2025-02-26', time: '10:00', type: 'follow-up', status: 'scheduled' }
+        ];
+
+        let consultations = [
+            { id: 'C001', patientId: 'P001', patientName: 'Amadou Diallo', doctor: 'Dr. Diallo', date: '2025-02-26', status: 'in-progress' }
+        ];
+
+        // ==================== AUTHENTIFICATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            initData();
+        });
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    currentUser = JSON.parse(atob(token));
+                    showApp();
+                } catch {
+                    showLogin();
+                }
+            } else {
+                showLogin();
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const users = {
+                'admin@clinique.com': { password: 'admin123', role: 'admin', name: 'Admin Système' },
+                'medecin@clinique.com': { password: 'medecin123', role: 'doctor', name: 'Dr. Diallo' },
+                'secretaire@clinique.com': { password: 'secret123', role: 'secretary', name: 'Fatou Diop' },
+                'pharmacien@clinique.com': { password: 'pharma123', role: 'pharmacist', name: 'Omar Fall' },
+                'labo@clinique.com': { password: 'labo123', role: 'lab', name: 'Aminata Sow' }
+            };
+            
+            if (users[email] && users[email].password === password) {
+                const user = users[email];
+                const token = btoa(JSON.stringify({
+                    email,
+                    role: user.role,
+                    name: user.name
+                }));
+                
+                localStorage.setItem('token', token);
+                currentUser = { email, role: user.role, name: user.name };
+                
+                showToast('Connexion réussie! Bienvenue ' + user.name, 'success');
+                showApp();
+            } else {
+                showToast('Email ou mot de passe incorrect', 'error');
+            }
+        }
+
+        function fillCredentials(email, password) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            currentUser = null;
+            showLogin();
+            showToast('Déconnexion réussie', 'info');
+        }
+
+        function showApp() {
+            document.getElementById('mainHeader').style.display = 'flex';
+            document.getElementById('loginPage').style.display = 'none';
+            
+            document.getElementById('userName').textContent = currentUser.name;
+            
+            const roleMap = {
+                'admin': 'Super Admin',
+                'doctor': 'Médecin',
+                'secretary': 'Secrétaire',
+                'pharmacist': 'Pharmacien',
+                'lab': 'Laborantin'
+            };
+            document.getElementById('userRole').textContent = roleMap[currentUser.role] || currentUser.role;
+            
+            const initials = currentUser.name.split(' ').map(n => n[0]).join('');
+            document.getElementById('userAvatar').textContent = initials;
+            
+            showPage('dashboard');
+        }
+
+        function showLogin() {
+            document.getElementById('mainHeader').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            
+            const pages = ['dashboard', 'patients', 'appointments', 'consultations', 'medical-records', 
+                          'prescriptions', 'labo', 'pharmacy', 'invoices', 'stock', 'staff', 'reports', 'settings'];
+            pages.forEach(page => {
+                const el = document.getElementById(page + 'Page');
+                if (el) el.style.display = 'none';
+            });
+        }
+
+        // ==================== NAVIGATION ====================
+        function showPage(page) {
+            currentPage = page;
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeNav = Array.from(document.querySelectorAll('.nav-item')).find(
+                item => item.getAttribute('onclick')?.includes(`'${page}'`)
+            );
+            if (activeNav) activeNav.classList.add('active');
+            
+            const pages = ['dashboard', 'patients', 'appointments', 'consultations', 'medical-records', 
+                          'prescriptions', 'labo', 'pharmacy', 'invoices', 'stock', 'staff', 'reports', 'settings'];
+            
+            pages.forEach(p => {
+                const el = document.getElementById(p + 'Page');
+                if (el) el.style.display = p === page ? 'block' : 'none';
+            });
+            
+            // Charger les données selon la page
+            switch(page) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'patients':
+                    loadPatients();
+                    break;
+                case 'appointments':
+                    loadAppointments();
+                    break;
+                case 'consultations':
+                    loadConsultations();
+                    break;
+            }
+        }
+
+        // ==================== TABLEAU DE BORD ====================
+        function loadDashboard() {
+            updateStats();
+            loadUpcomingAppointments();
+            loadRecentPatients();
+            loadNotifications();
+            loadBedsOccupancy();
+            initDashboardChart();
+        }
+
+        function updateStats() {
+            document.getElementById('statsTotalPatients').textContent = patients.length;
+            document.getElementById('statsTodayAppointments').textContent = 
+                appointments.filter(a => a.date === new Date().toISOString().split('T')[0]).length;
+            document.getElementById('statsMonthlyRevenue').textContent = '12.5M FCFA';
+            document.getElementById('statsHospitalized').textContent = '18';
+            document.getElementById('statsAlerts').textContent = '6';
+            document.getElementById('statsDoctors').textContent = '15';
+        }
+
+        function loadUpcomingAppointments() {
+            const container = document.getElementById('upcomingAppointments');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = appointments.filter(a => a.date === today).slice(0, 5);
+            
+            todayAppointments.forEach(apt => {
+                const div = document.createElement('div');
+                div.className = 'appointment-item';
+                div.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <div>
+                            <strong>${apt.time}</strong> - ${apt.patientName}
+                            <br><small>${apt.doctor}</small>
+                        </div>
+                        <span class="badge badge-${apt.status}">${apt.status}</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadRecentPatients() {
+            const tbody = document.getElementById('recentPatients');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            patients.slice(0, 5).forEach(patient => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div class="patient-info">
+                            <div class="patient-avatar">${patient.firstName[0]}${patient.lastName[0]}</div>
+                            <div>${patient.firstName} ${patient.lastName}</div>
+                        </div>
+                    </td>
+                    <td>${patient.phone}</td>
+                    <td>${new Date().toLocaleDateString('fr-FR')}</td>
+                    <td>
+                        <button class="btn-icon" onclick="viewPatient('${patient.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function loadNotifications() {
+            const container = document.getElementById('notificationsList');
+            if (!container) return;
+            
+            const notifications = [
+                { type: 'warning', message: 'Stock de paracétamol faible', time: 'Il y a 10 min' },
+                { type: 'info', message: 'Nouveau patient en attente', time: 'Il y a 25 min' },
+                { type: 'success', message: 'Paiement de 50 000 FCFA reçu', time: 'Il y a 1h' },
+                { type: 'danger', message: 'Rendez-vous annulé', time: 'Il y a 2h' }
+            ];
+            
+            container.innerHTML = '';
+            notifications.forEach(notif => {
+                const div = document.createElement('div');
+                div.className = `notification-item`;
+                                div.className = `notification-item`;
+                div.style.cssText = `
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 10px;
+                    border-bottom: 1px solid var(--border);
+                `;
+                div.innerHTML = `
+                    <i class="fas fa-${notif.type === 'warning' ? 'exclamation-triangle' : 
+                                     notif.type === 'info' ? 'info-circle' : 
+                                     notif.type === 'success' ? 'check-circle' : 'times-circle'}" 
+                       style="color: var(--${notif.type});"></i>
+                    <div style="flex: 1;">
+                        <div>${notif.message}</div>
+                        <small style="color: var(--text-muted);">${notif.time}</small>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadBedsOccupancy() {
+            const container = document.getElementById('bedsOccupancy');
+            if (!container) return;
+            
+            const beds = [
+                { number: '101', status: 'occupied', patient: 'Diallo A.' },
+                { number: '102', status: 'occupied', patient: 'Sow F.' },
+                { number: '103', status: 'free' },
+                { number: '104', status: 'maintenance' },
+                { number: '105', status: 'occupied', patient: 'Ndiaye M.' }
+            ];
+            
+            container.innerHTML = '';
+            beds.forEach(bed => {
+                const div = document.createElement('div');
+                div.style.cssText = `
+                    padding: 10px;
+                    border-radius: var(--radius-md);
+                    background: ${bed.status === 'occupied' ? 'rgba(13, 148, 136, 0.1)' : 
+                                 bed.status === 'maintenance' ? 'rgba(239, 68, 68, 0.1)' : 
+                                 'rgba(16, 185, 129, 0.1)'};
+                    text-align: center;
+                `;
+                div.innerHTML = `
+                    <strong>Lit ${bed.number}</strong><br>
+                    <small style="color: var(--text-muted);">
+                        ${bed.status === 'occupied' ? bed.patient : 
+                          bed.status === 'maintenance' ? 'Maintenance' : 'Libre'}
+                    </small>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function initDashboardChart() {
+            const ctx = document.getElementById('dashboardChart')?.getContext('2d');
+            if (!ctx) return;
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                    datasets: [{
+                        label: 'Consultations',
+                        data: [45, 52, 48, 70, 65, 32, 28],
+                        borderColor: '#0D9488',
+                        backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Urgences',
+                        data: [8, 6, 10, 7, 12, 15, 18],
+                        borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateDashboardChart(period) {
+            showToast('Mise à jour du graphique pour ' + period, 'info');
+        }
+
+        function refreshDashboard() {
+            loadDashboard();
+            showToast('Tableau de bord actualisé', 'success');
+        }
+
+        // ==================== GESTION DES PATIENTS ====================
+        let currentPatientPage = 1;
+        const patientsPerPage = 10;
+        let filteredPatients = [];
+
+        function loadPatients() {
+            filteredPatients = [...patients];
+            displayPatients();
+            updatePatientFilters();
+        }
+
+        function displayPatients() {
+            const tbody = document.getElementById('patientsList');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            const start = (currentPatientPage - 1) * patientsPerPage;
+            const end = start + patientsPerPage;
+            const paginatedPatients = filteredPatients.slice(start, end);
+            
+            paginatedPatients.forEach(patient => {
+                const tr = document.createElement('tr');
+                const age = calculateAge(patient.birthDate);
+                const initials = patient.firstName[0] + patient.lastName[0];
+                
+                tr.innerHTML = `
+                    <td><input type="checkbox" value="${patient.id}"></td>
+                    <td><strong>${patient.id}</strong></td>
+                    <td>
+                        <div class="patient-info">
+                            <div class="patient-avatar">${initials}</div>
+                            <div class="patient-details">
+                                <span class="patient-name">${patient.firstName} ${patient.lastName}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${age} ans / ${patient.gender === 'M' ? 'H' : 'F'}</td>
+                    <td>${patient.phone}<br><small>${patient.email || ''}</small></td>
+                    <td>${patient.bloodType || '-'}</td>
+                    <td><span class="badge badge-info">SUNU</span></td>
+                    <td><span class="badge badge-primary">Externe</span></td>
+                    <td>${new Date().toLocaleDateString('fr-FR')}</td>
+                    <td>
+                        <span class="badge ${patient.status === 'active' ? 'badge-success' : 'badge-danger'}">
+                            ${patient.status === 'active' ? 'Actif' : 'Inactif'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon" onclick="viewPatientDetails('${patient.id}')" title="Voir">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-icon" onclick="editPatient('${patient.id}')" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon" onclick="scheduleForPatient('${patient.id}')" title="RDV">
+                                <i class="fas fa-calendar-plus"></i>
+                            </button>
+                            <button class="btn-icon" onclick="patientHistory('${patient.id}')" title="Historique">
+                                <i class="fas fa-history"></i>
+                            </button>
+                            <button class="btn-icon" onclick="printPatientCard('${patient.id}')" title="Imprimer carte">
+                                <i class="fas fa-id-card"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            updatePatientPagination();
+        }
+
+        function calculateAge(birthDate) {
+            const today = new Date();
+            const birth = new Date(birthDate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const m = today.getMonth() - birth.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        function updatePatientPagination() {
+            const totalPages = Math.ceil(filteredPatients.length / patientsPerPage);
+            document.getElementById('patientsPageInfo').textContent = `Page ${currentPatientPage} sur ${totalPages || 1}`;
+        }
+
+        function changePatientsPage(direction) {
+            const totalPages = Math.ceil(filteredPatients.length / patientsPerPage);
+            
+            if (direction === 'first') currentPatientPage = 1;
+            if (direction === 'prev' && currentPatientPage > 1) currentPatientPage--;
+            if (direction === 'next' && currentPatientPage < totalPages) currentPatientPage++;
+            if (direction === 'last') currentPatientPage = totalPages;
+            
+            displayPatients();
+        }
+
+        function filterPatients() {
+            const searchTerm = document.getElementById('patientSearch').value.toLowerCase();
+            const typeFilter = document.getElementById('patientTypeFilter').value;
+            const statusFilter = document.getElementById('patientStatusFilter').value;
+            
+            filteredPatients = patients.filter(patient => {
+                const matchesSearch = patient.firstName.toLowerCase().includes(searchTerm) ||
+                                    patient.lastName.toLowerCase().includes(searchTerm) ||
+                                    patient.phone.includes(searchTerm) ||
+                                    patient.id.toLowerCase().includes(searchTerm);
+                
+                const matchesStatus = statusFilter === 'all' || patient.status === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+            
+            currentPatientPage = 1;
+            displayPatients();
+        }
+
+        function resetPatientFilters() {
+            document.getElementById('patientSearch').value = '';
+            document.getElementById('patientTypeFilter').value = 'all';
+            document.getElementById('patientStatusFilter').value = 'all';
+            document.getElementById('patientInsuranceFilter').value = 'all';
+            filterPatients();
+        }
+
+        function toggleAllPatients(checkbox) {
+            const checkboxes = document.querySelectorAll('#patientsTable tbody input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = checkbox.checked);
+        }
+
+        function switchPatientTab(tab) {
+            const tabs = document.querySelectorAll('#patientsPage .tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filtrer selon l'onglet
+            showToast('Affichage des patients: ' + tab, 'info');
+        }
+
+        function viewPatientDetails(patientId) {
+            const patient = patients.find(p => p.id === patientId);
+            if (patient) {
+                showToast(`Fiche patient: ${patient.firstName} ${patient.lastName}`, 'info');
+                // Ici on pourrait ouvrir une modale de détails
+            }
+        }
+
+        function patientHistory(patientId) {
+            showPage('medical-records');
+            showToast('Chargement de l\'historique du patient...', 'info');
+        }
+
+        function printPatientCard(patientId) {
+            showToast('Impression de la carte patient', 'success');
+        }
+
+        function exportPatients(format) {
+            showToast(`Export ${format} en cours...`, 'info');
+            setTimeout(() => {
+                showToast(`Export ${format} terminé`, 'success');
+            }, 2000);
+        }
+
+        function printPatients() {
+            window.print();
+        }
+
+        // ==================== MODAL PATIENT ====================
+        function openPatientModal(patientId = null) {
+            const modal = document.getElementById('patientModal');
+            const form = document.getElementById('patientForm');
+            
+            if (patientId) {
+                document.getElementById('patientModalTitle').textContent = 'Modifier patient';
+                const patient = patients.find(p => p.id === patientId);
+                if (patient) {
+                    document.getElementById('firstName').value = patient.firstName;
+                    document.getElementById('lastName').value = patient.lastName;
+                    document.getElementById('birthDate').value = patient.birthDate;
+                    document.getElementById('gender').value = patient.gender;
+                    document.getElementById('phone').value = patient.phone;
+                    document.getElementById('email').value = patient.email || '';
+                    
+                    modal.dataset.editId = patientId;
+                }
+            } else {
+                document.getElementById('patientModalTitle').textContent = 'Nouveau patient';
+                form.reset();
+                document.getElementById('patientId').value = generatePatientId();
+                delete modal.dataset.editId;
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        function closePatientModal() {
+            document.getElementById('patientModal').style.display = 'none';
+        }
+
+        function generatePatientId() {
+            const lastId = patients.length > 0 ? parseInt(patients[patients.length - 1].id.substring(1)) : 0;
+            return 'P' + String(lastId + 1).padStart(3, '0');
+        }
+
+        function savePatient(event) {
+            event.preventDefault();
+            
+            const patientData = {
+                id: document.getElementById('patientModal').dataset.editId || generatePatientId(),
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                birthDate: document.getElementById('birthDate').value,
+                gender: document.getElementById('gender').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                status: 'active'
+            };
+            
+            if (document.getElementById('patientModal').dataset.editId) {
+                const index = patients.findIndex(p => p.id === patientData.id);
+                if (index !== -1) {
+                    patients[index] = { ...patients[index], ...patientData };
+                }
+                showToast('Patient modifié avec succès', 'success');
+            } else {
+                patients.push(patientData);
+                showToast('Patient créé avec succès', 'success');
+            }
+            
+            closePatientModal();
+            
+            if (currentPage === 'patients') {
+                loadPatients();
+            }
+        }
+
+        // ==================== GESTION RENDEZ-VOUS ====================
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function loadAppointments() {
+            updateAppointmentFilters();
+            displayAppointmentsList();
+            generateCalendar();
+        }
+
+        function displayAppointmentsList() {
+            const tbody = document.getElementById('appointmentsList');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = appointments.filter(a => a.date === today);
+            
+            todayAppointments.forEach(apt => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${apt.time}</strong></td>
+                    <td>${apt.patientName}</td>
+                    <td>${apt.doctor}</td>
+                    <td><span class="badge badge-info">${apt.type}</span></td>
+                    <td>Consultation générale</td>
+                    <td><span class="badge badge-${apt.status}">${apt.status}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon" onclick="startAppointment('${apt.id}')" title="Démarrer">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="btn-icon" onclick="confirmAppointment('${apt.id}')" title="Confirmer">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn-icon" onclick="rescheduleAppointment('${apt.id}')" title="Reporter">
+                                <i class="fas fa-clock"></i>
+                            </button>
+                            <button class="btn-icon" onclick="cancelAppointment('${apt.id}')" title="Annuler">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateAppointmentFilters() {
+            const doctorFilter = document.getElementById('appointmentDoctorFilter');
+            if (!doctorFilter) return;
+            
+            const doctors = ['Dr. Diallo', 'Dr. Diop', 'Dr. Seck', 'Dr. Fall', 'Dr. Ndiaye'];
+            doctorFilter.innerHTML = '<option value="all">Tous médecins</option>';
+            doctors.forEach(doctor => {
+                const option = document.createElement('option');
+                option.value = doctor;
+                option.textContent = doctor;
+                doctorFilter.appendChild(option);
+            });
+        }
+
+        function toggleView(view) {
+            const calendarView = document.getElementById('calendarView');
+            const listView = document.getElementById('listView');
+            
+            if (view === 'calendar') {
+                calendarView.style.display = 'block';
+                listView.style.display = 'none';
+            } else {
+                calendarView.style.display = 'none';
+                listView.style.display = 'block';
+            }
+        }
+
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            if (!grid) return;
+            
+            const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+            let html = '';
+            
+            days.forEach(day => {
+                html += `<div class="calendar-day-header">${day}</div>`;
+            });
+            
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            // Jours vides avant le 1er
+            for (let i = 1; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
+                html += `<div class="calendar-day"></div>`;
+            }
+            
+            // Jours du mois
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const dayAppointments = appointments.filter(a => a.date === dateStr);
+                
+                html += `
+                    <div class="calendar-day" onclick="showDayAppointments('${dateStr}')">
+                        <div class="calendar-day-number">${d}</div>
+                        ${dayAppointments.slice(0, 2).map(apt => 
+                            `<div class="calendar-event">${apt.time} ${apt.patientName}</div>`
+                        ).join('')}
+                        ${dayAppointments.length > 2 ? `<small>+${dayAppointments.length - 2}</small>` : ''}
+                    </div>
+                `;
+            }
+            
+            grid.innerHTML = html;
+            document.getElementById('currentMonthYear').textContent = 
+                new Date(currentYear, currentMonth).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+        }
+
+        function changeMonth(direction) {
+            if (direction === 'prev') {
+                if (currentMonth === 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                } else {
+                    currentMonth--;
+                }
+            } else {
+                if (currentMonth === 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                } else {
+                    currentMonth++;
+                }
+            }
+            generateCalendar();
+        }
+
+        function goToToday() {
+            const today = new Date();
+            currentMonth = today.getMonth();
+            currentYear = today.getFullYear();
+            generateCalendar();
+        }
+
+        function showDayAppointments(date) {
+            showToast(`Rendez-vous du ${new Date(date).toLocaleDateString('fr-FR')}`, 'info');
+        }
+
+        function openAppointmentModal() {
+            const modal = document.getElementById('appointmentModal');
+            const patientSelect = document.getElementById('appointmentPatient');
+            
+            patientSelect.innerHTML = '<option value="">Sélectionner un patient</option>';
+            patients.forEach(patient => {
+                const option = document.createElement('option');
+                option.value = patient.id;
+                option.textContent = `${patient.firstName} ${patient.lastName}`;
+                patientSelect.appendChild(option);
+            });
+            
+            document.getElementById('appointmentDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('appointmentTime').value = '09:00';
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeAppointmentModal() {
+            document.getElementById('appointmentModal').style.display = 'none';
+        }
+
+        function saveAppointment(event) {
+            event.preventDefault();
+            
+            const patientId = document.getElementById('appointmentPatient').value;
+            const patient = patients.find(p => p.id === patientId);
+            
+            const newAppointment = {
+                id: 'A' + String(appointments.length + 1).padStart(3, '0'),
+                patientId: patientId,
+                patientName: `${patient.firstName} ${patient.lastName}`,
+                doctor: document.getElementById('appointmentDoctor').value,
+                date: document.getElementById('appointmentDate').value,
+                time: document.getElementById('appointmentTime').value,
+                type: document.getElementById('appointmentType').value,
+                status: 'scheduled'
+            };
+            
+            appointments.push(newAppointment);
+            closeAppointmentModal();
+            showToast('Rendez-vous programmé avec succès', 'success');
+            
+            if (currentPage === 'appointments') {
+                loadAppointments();
+            }
+        }
+
+        function filterAppointments() {
+            const searchTerm = document.getElementById('appointmentSearch').value.toLowerCase();
+            const dateFilter = document.getElementById('appointmentDateFilter').value;
+            const doctorFilter = document.getElementById('appointmentDoctorFilter').value;
+            const statusFilter = document.getElementById('appointmentStatusFilter').value;
+            
+            showToast('Filtres appliqués', 'success');
+        }
+
+        function startAppointment(id) {
+            const apt = appointments.find(a => a.id === id);
+            if (apt) {
+                showPage('consultations');
+                showToast(`Démarrage de la consultation pour ${apt.patientName}`, 'success');
+            }
+        }
+
+        function confirmAppointment(id) {
+            const apt = appointments.find(a => a.id === id);
+            if (apt) {
+                apt.status = 'confirmed';
+                loadAppointments();
+                showToast('Rendez-vous confirmé', 'success');
+            }
+        }
+
+        function rescheduleAppointment(id) {
+            showToast('Fonctionnalité de report de rendez-vous', 'info');
+        }
+
+        function cancelAppointment(id) {
+            if (confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) {
+                const apt = appointments.find(a => a.id === id);
+                if (apt) {
+                    apt.status = 'cancelled';
+                    loadAppointments();
+                    showToast('Rendez-vous annulé', 'info');
+                }
+            }
+        }
+
+        // ==================== CONSULTATIONS ====================
+        function loadConsultations() {
+            loadWaitingQueue();
+            loadInConsultation();
+            loadCompletedConsultations();
+        }
+
+        function loadWaitingQueue() {
+            const queue = document.getElementById('waitingQueue');
+            if (!queue) return;
+            
+            queue.innerHTML = '';
+            
+            const waiting = [
+                { name: 'Amadou Diallo', time: '09:00', doctor: 'Dr. Diallo' },
+                { name: 'Fatou Sow', time: '09:30', doctor: 'Dr. Diop' },
+                { name: 'Mamadou Ndiaye', time: '10:00', doctor: 'Dr. Seck' },
+                { name: 'Aminata Fall', time: '10:30', doctor: 'Dr. Diallo' }
+            ];
+            
+            waiting.forEach((patient, index) => {
+                const div = document.createElement('div');
+                div.className = 'kanban-item';
+                div.draggable = true;
+                div.innerHTML = `
+                    <strong>${patient.name}</strong><br>
+                    <small>${patient.time} - ${patient.doctor}</small>
+                `;
+                queue.appendChild(div);
+            });
+        }
+
+        function loadInConsultation() {
+            const container = document.getElementById('inConsultation');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const inConsult = [
+                { name: 'Oumar Ba', doctor: 'Dr. Fall', startTime: '09:15' }
+            ];
+            
+            inConsult.forEach(patient => {
+                const div = document.createElement('div');
+                div.className = 'kanban-item';
+                div.innerHTML = `
+                    <strong>${patient.name}</strong><br>
+                    <small>${patient.doctor} - Depuis ${patient.startTime}</small>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadCompletedConsultations() {
+            const container = document.getElementById('completedConsultations');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const completed = [
+                { name: 'Mariama Diop', doctor: 'Dr. Seck' },
+                { name: 'Ibrahima Fall', doctor: 'Dr. Ndiaye' }
+            ];
+            
+            completed.forEach(patient => {
+                const div = document.createElement('div');
+                div.className = 'kanban-item';
+                div.innerHTML = `
+                    <strong>${patient.name}</strong><br>
+                    <small>${patient.doctor}</small>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function startConsultation() {
+            document.getElementById('currentConsultation').style.display = 'block';
+            document.getElementById('consultPatient').value = 'Amadou Diallo';
+            document.getElementById('consultDoctor').value = 'Dr. Diallo';
+            document.getElementById('consultStartTime').value = new Date().toLocaleTimeString();
+        }
+
+        function saveConsultation(mode) {
+            if (mode === 'complete') {
+                showToast('Consultation terminée avec succès', 'success');
+                document.getElementById('currentConsultation').style.display = 'none';
+            } else {
+                showToast('Brouillon sauvegardé', 'info');
+            }
+        }
+
+        function prescribeMedicines() {
+            openPrescriptionModal();
+        }
+
+        function requestLabTests() {
+            showPage('labo');
+            showToast('Nouvelle demande d\'analyse', 'info');
+        }
+
+        // ==================== PRESCRIPTIONS ====================
+        function openPrescriptionModal() {
+            const modal = document.getElementById('prescriptionModal');
+            document.getElementById('prescriptionPatient').value = 'Amadou Diallo';
+            document.getElementById('prescriptionDoctor').value = 'Dr. Diallo';
+            modal.style.display = 'flex';
+        }
+
+        function closePrescriptionModal() {
+            document.getElementById('prescriptionModal').style.display = 'none';
+        }
+
+        function addMedicine() {
+            const container = document.getElementById('medicinesList');
+            const medicineDiv = document.createElement('div');
+            medicineDiv.className = 'form-row';
+            medicineDiv.style.marginBottom = '10px';
+            medicineDiv.innerHTML = `
+                <div class="form-group">
+                    <input type="text" placeholder="Médicament" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Posologie" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Durée" style="width: 100%;">
+                </div>
+                <button type="button" class="btn-icon" onclick="this.parentElement.remove()">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(medicineDiv);
+        }
+
+        function switchPrescriptionTab(tab) {
+            const tabs = document.querySelectorAll('#prescriptionsPage .tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            showToast('Affichage des prescriptions ' + tab, 'info');
+        }
+
+        // ==================== LABORATOIRE ====================
+        function switchLabTab(tab) {
+            const tabs = document.querySelectorAll('#laboPage .tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            showToast('Affichage des analyses ' + tab, 'info');
+        }
+
+        function newLabRequest() {
+            showToast('Nouvelle demande d\'analyse', 'info');
+        }
+
+        // ==================== FACTURATION ====================
+        function switchInvoiceTab(tab) {
+            const tabs = document.querySelectorAll('#invoicesPage .tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            showToast('Affichage des factures ' + tab, 'info');
+        }
+
+        function newInvoice() {
+            showToast('Création d\'une nouvelle facture', 'info');
+        }
+
+        function newPayment() {
+            showToast('Encaissement de paiement', 'info');
+        }
+
+        // ==================== RAPPORTS ====================
+        function generateReport() {
+            showToast('Génération du rapport en cours...', 'info');
+        }
+
+        function exportData() {
+            showToast('Export des données en cours...', 'info');
+        }
+
+        function quickReport(type) {
+            showToast('Génération du rapport ' + type, 'info');
+        }
+
+        // ==================== PARAMÈTRES ====================
+        function switchSettingsTab(tab) {
+            const tabs = document.querySelectorAll('#settingsPage .tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            showToast('Paramètres ' + tab, 'info');
+        }
+
+        // ==================== UTILITAIRES ====================
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const messageSpan = document.getElementById('toastMessage');
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            
+            icon.className = `fas ${icons[type]}`;
+            messageSpan.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'flex';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        function initData() {
+            // Initialiser les données si nécessaire
+            console.log('Application initialisée');
+        }
+
+        // Fermer les modals si clic à l'extérieur
+        window.onclick = function(event) {
+            const modals = ['patientModal', 'appointmentModal', 'prescriptionModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Gestion du glisser-déposer pour le kanban
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.classList.contains('kanban-item')) {
+                e.dataTransfer.setData('text/plain', e.target.innerHTML);
+            }
+        });
+
+        document.addEventListener('dragover', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('drop', function(e) {
+            e.preventDefault();
+            if (e.target.closest('.kanban-column')) {
+                const data = e.dataTransfer.getData('text/plain');
+                const newItem = document.createElement('div');
+                newItem.className = 'kanban-item';
+                newItem.draggable = true;
+                newItem.innerHTML = data;
+                e.target.closest('.kanban-column').appendChild(newItem);
+            }
+        });
+    </script>
+</body>
+</html>
